@@ -1,0 +1,18 @@
+; ScaleTextInPlace - Scales annotation text in place
+(defun c:ScaleTextInPlace ()
+  (setq ss (ssget '((0 . "TEXT,MTEXT,DIMENSION,LEADER"))))  ; Select all annotation objects
+  (if ss
+    (progn
+      (setq scaleFactor (getreal "\nEnter scale factor: "))  ; Ask user for scale factor
+      (setq i 0 n (sslength ss))
+      (while (< i n)
+        (setq ent (ssname ss i))
+        (setq entData (entget ent))
+        (setq pos (cdr (assoc 10 entData)))  ; Get the insertion point
+        (command "SCALE" ent "" pos scaleFactor)  ; Scale each object from its own center
+        (setq i (1+ i))
+      )
+    )
+  )
+  (princ "\nAll annotations scaled in place.")
+)
