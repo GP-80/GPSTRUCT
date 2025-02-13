@@ -1,3 +1,4 @@
+; PLVERTCSV - EXTRACTS COORDINATES OF POLYLINE VERTICES INTO CSV FILE
 (defun C:PLVERTCSV (/ ent pldata ptlist csvfile filepath closed)
   (setq ent (car (entsel "\nSelect polyline: ")))
   
