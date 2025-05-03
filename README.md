@@ -1,2 +1,2 @@
 # GPSTRUCT
-Civil and Structural Engineering Tools
+Geospatial and Engineering Tools
