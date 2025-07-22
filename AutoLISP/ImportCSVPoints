@@ -1,0 +1,38 @@
+(defun c:ImportCSVPoints ( / file line data x y z point )
+  (setq file (getfiled "Select CSV File" "" "csv" 0))
+  (if file
+    (progn
+      (setq file (open file "r"))
+      (while (setq line (read-line file))
+        ;; split the line at commas
+        (setq data (parsecsv line))
+        (cond
+          ((= (length data) 2)
+           (setq x (atof (nth 0 data)))
+           (setq y (atof (nth 1 data)))
+           (setq z 0.0))
+          ((= (length data) 3)
+           (setq x (atof (nth 0 data)))
+           (setq y (atof (nth 1 data)))
+           (setq z (atof (nth 2 data))))
+        )
+        (setq point (list x y z))
+        (command "_.POINT" point)
+      )
+      (close file)
+      (princ "\nDone importing points.")
+    )
+    (princ "\nNo file selected.")
+  )
+  (princ)
+)
+
+(defun parsecsv (line / result start pos)
+  (setq result '() start 0)
+  (while (setq pos (vl-string-search "," line start))
+    (setq result (append result (list (substr line (+ start 1) (- pos start)))))
+    (setq start (+ pos 1))
+  )
+  (setq result (append result (list (substr line (+ start 1)))))
+  result
+)
